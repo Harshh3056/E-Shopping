@@ -1,0 +1,136 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .razorpay-payment-button{
+        display: none;
+    }
+</style>
+<!-- Page Header -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px;">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Checkout</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="{% url 'index' %}">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Checkout</p>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout Form -->
+<div class="container-fluid pt-5">
+        <form action="{% url 'order' %}" method="post">
+            {% csrf_token %}
+            <script src="https://checkout.razorpay.com/v1/checkout.js" data-key="rzp_test_bilBagOBVTi4lE"
+        data-amount={{response.amount}} data-currency={{response.currency}} data-buttontext="Pay with Razorpay"
+        data-name="{{request.user}}" data-theme.color="#F37254" data-description="" data-image=""
+        data-prefill.name={{request.user.username}} data-prefill.email={{request.user.email}}>
+        </script>
+        <div class="row px-xl-5">
+            <!-- Billing Address -->
+            <div class="col-lg-8">
+                <div class="mb-4">
+                    <h4 class="font-weight-semi-bold mb-4">Billing Address</h4>
+                    <div class="row">
+                        {% csrf_token %}
+                        <div class="col-md-6 form-group">
+                            <label>First Name</label>
+                            <input class="form-control" name="first_name" type="text" placeholder="John" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" name="last_name" type="text" placeholder="Doe" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Email</label>
+                            <input class="form-control" name="email" type="email" placeholder="email@example.com" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Mobile No</label>
+                            <input class="form-control" name="mobile_no" type="text" placeholder="+91 9876543210" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 1</label>
+                            <input class="form-control" name="address_line1" type="text" placeholder="Street" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Address Line 2</label>
+                            <input class="form-control" name="address_line2" type="text" placeholder="Area">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Country</label>
+                            <select class="custom-select" name="country" required>
+                                <option selected>India</option>
+                                <option>USA</option>
+                                <option>UK</option>
+                                <option>Australia</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            <input class="form-control" name="city" type="text" placeholder="City" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>State</label>
+                            <input class="form-control" name="state" type="text" placeholder="State" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>ZIP Code</label>
+                            <input class="form-control" name="zip_code" type="text" placeholder="123456" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Order Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="font-weight-medium mb-3">Products</h5>
+                        {% for item in cart_items_product %}
+                        <div class="d-flex justify-content-between">
+                            <p>{{ item.name }} (x{{ item.quantity }})</p>
+                            <p>Rs.{{ item.total_price }}</p>
+                        </div>
+                        {% empty %}
+                        <p>No products in cart</p>
+                        {% endfor %}
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>Subtotal</h6>
+                            <h6>Rs.{{ subtotal }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>Shipping</h6>
+                            <h6>Rs.{{ shipping }}</h6>
+                        </div>
+                        {% if discount %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6 class="text-success">Discount</h6>
+                            <h6 class="text-success">- Rs.{{ discount }}</h6>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between">
+                            <h5 class="font-weight-bold">Grand Total</h5>
+                            <h5 class="font-weight-bold">Rs.{{ final_total }}</h5>
+                        </div>
+                    </div>
+                </div>
+                {% if cart_items_product %}
+                    <button type="submit" class="btn btn-block btn-primary font-weight-bold py-3">Place Order</button>
+                {% else %}
+                    <button type="button" class="btn btn-block btn-secondary font-weight-bold py-3" disabled>Place Order</button>
+                    <p class="text-danger text-center mt-2">Please add products to cart before placing an order.</p>
+                {% endif %}
+                </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

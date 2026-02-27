@@ -1,0 +1,203 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Shop Detail</p>
+        </div>
+    </div>
+</div>
+<!-- Page Header End -->
+
+<!-- Shop Detail Start -->
+<div class="container-fluid py-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-5 pb-5">
+            <div class="carousel-inner border">
+                <div class="carousel-item active">
+                    <img class="w-100 h-100" src="{{ pid.image.url }}" alt="Image">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-7 pb-5">
+            <h3 class="font-weight-semi-bold">{{ pid.name }}</h3>
+            <div class="d-flex mb-3">
+                <div class="text-primary mr-2">
+                    {% for i in "12345" %}
+                        {% if forloop.counter <= full_stars %}
+                            <small class="fas fa-star"></small>
+                        {% elif half_star and forloop.counter == full_stars|add:1 %}
+                            <small class="fas fa-star-half-alt"></small>
+                        {% else %}
+                            <small class="far fa-star"></small>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <small class="pt-1">({{ avg_rating }}/5, {{ total_reviews }} Reviews)</small>
+            </div>
+            <h3 class="font-weight-semi-bold mb-4">Rs.{{ pid.price }}</h3>
+            <p class="mb-4">{{ pid.des }}</p>
+            <div class="d-flex mb-3">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Sizes:</p>
+                    <form>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-1" name="size">
+                            <label class="custom-control-label" for="size-1">XS</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-2" name="size">
+                            <label class="custom-control-label" for="size-2">S</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-3" name="size">
+                            <label class="custom-control-label" for="size-3">M</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-4" name="size">
+                            <label class="custom-control-label" for="size-4">L</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="size-5" name="size">
+                            <label class="custom-control-label" for="size-5">XL</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex mb-4">
+                    <p class="text-dark font-weight-medium mb-0 mr-3">Colors:</p>
+                    <form>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="color-1" name="color">
+                            <label class="custom-control-label" for="color-1">Black</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="color-2" name="color">
+                            <label class="custom-control-label" for="color-2">White</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="color-3" name="color">
+                            <label class="custom-control-label" for="color-3">Red</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="color-4" name="color">
+                            <label class="custom-control-label" for="color-4">Blue</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" class="custom-control-input" id="color-5" name="color">
+                            <label class="custom-control-label" for="color-5">Green</label>
+                        </div>
+                    </form>
+                </div>
+            <div class="d-flex align-items-center mb-4 pt-2">
+                <div class="input-group quantity mr-3" style="width: 130px;">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary btn-minus"><i class="fa fa-minus"></i></button>
+                    </div>
+                    <input type="text" class="form-control bg-secondary text-center" value="1">
+                    <div class="input-group-btn">
+                        <button class="btn btn-primary btn-plus"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+            </div>
+        </div>
+    </div>
+    <!-- Tabs -->
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-1">Description</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-3">Reviews ({{ reviews.count }})</a>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane fade" id="tab-pane-1">
+                    <h4 class="mb-3">Product Description</h4>
+                    <p>{{ pid.description }}</p>
+                </div>
+                <div class="tab-pane fade" id="tab-pane-2">
+                    <h4 class="mb-3">Additional Information</h4>
+                    <p>Additional product details go here...</p>
+                </div>
+                <div class="tab-pane fade show active" id="tab-pane-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="mb-4">{{ reviews.count }} review(s) for "{{ pid.name }}"</h4>
+                            {% for r in reviews %}
+                                <div class="media mb-4">
+                                    <img src="{% static 'img/unnamed.jpg' %}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6>{{ r.name }}<small> - <i>{{ r.created_at|date:"d M Y" }}</i></small></h6>
+                                        <div class="text-primary mb-2">
+                                            {% for i in "12345"|make_list %}
+                                                {% if forloop.counter <= r.rating %}
+                                                    <i class="fas fa-star"></i>
+                                                {% else %}
+                                                    <i class="far fa-star"></i>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <p>{{ r.review }}</p>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No reviews yet.</p>
+                            {% endfor %}
+                        </div>
+                        <div class="col-md-6">
+                            <h4 class="mb-4">Leave a review</h4>
+                            <small>Your email address will not be published. Required fields are marked *</small>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <label for="rating">Your Rating *</label>
+                                    <div class="rating-css" style="font-size: 1.6rem; direction: rtl;">
+                                        {% for i in "54321"|make_list %}
+                                            <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" hidden>
+                                            <label for="star{{ i }}"><i class="fa fa-star"></i></label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="review">Your Review *</label>
+                                    <textarea id="review" name="review" cols="30" rows="5" class="form-control" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Your Name *</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Your Email *</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                </div>
+                            </form>
+                            <style>
+                                .rating-css label {
+                                    color: #ccc;
+                                    cursor: pointer;
+                                    display: inline-block;
+                                }
+                                .rating-css input:checked ~ label,
+                                .rating-css label:hover,
+                                .rating-css label:hover ~ label {
+                                    color: #ffc107;
+                                }
+                            </style>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
